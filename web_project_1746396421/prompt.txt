@@ -1,4 +1,4 @@
-TASK: Create the following web project: build a werbsite that say Welcome to Alameda Omar!
+TASK: Create the following web project: create a website that say "Let's see the work!"
 
 IMPORTANT:
 1. Please use /tools trust fs_write to get permission to write files
