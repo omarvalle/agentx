@@ -1,0 +1,13 @@
+total 60
+drwxr-xr-x 2 omarvall omarvall  4096 May  4 00:16 .
+drwxr-xr-x 7 omarvall omarvall  4096 May  4 00:15 ..
+-rw-r--r-- 1 omarvall omarvall   801 May  4 00:16 README.md
+-rw-r--r-- 1 omarvall omarvall     0 May  4 00:16 files_after.log
+-rw-r--r-- 1 omarvall omarvall   684 May  4 00:16 files_before.log
+-rw-r--r-- 1 omarvall omarvall   475 May  4 00:15 index.html
+-rw-r--r-- 1 omarvall omarvall   787 May  4 00:15 prompt.txt
+-rw-r--r-- 1 omarvall omarvall 17023 May  4 00:16 q_output.log
+-rw-r--r-- 1 omarvall omarvall  2001 May  4 00:15 q_permissions.log
+-rw-r--r-- 1 omarvall omarvall  1266 May  4 00:15 q_tools_status.log
+-rw-r--r-- 1 omarvall omarvall  1906 May  4 00:16 script.js
+-rw-r--r-- 1 omarvall omarvall  1367 May  4 00:15 styles.css

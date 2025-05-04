@@ -1,0 +1,20 @@
+To learn more about MCP safety, see https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-mcp-security.html
+
+[90m
+[92m/help[90m all commands  [1m•[22m  [92mctrl + j[90m new lines  [1m•[22m  [92mctrl + k[90m fuzzy search
+[39m[38;5;8m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[39m
+[39m
+[1mTool              Permission[0m
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔[1mBuilt-in:
+[0m- execute_bash      [38;5;2m[1mtrusted[0m
+- fs_read           [38;5;2m[1mtrusted[0m
+- use_aws           [38;5;2m[1mtrusted[0m
+- fs_write          [38;5;2m[1mtrusted[0m
+- report_issue      [38;5;2m[1mtrusted[0m
+
+
+Trusted tools can be run without confirmation
+[38;5;8m
+* Default settings
+
+💡 Use [38;5;10m/tools help[39m[38;5;8m to edit permissions.[39m

@@ -1,0 +1,8 @@
+total 24
+drwxr-xr-x 2 omarvall omarvall 4096 May  4 00:00 .
+drwxr-xr-x 6 omarvall omarvall 4096 May  4 00:00 ..
+-rw-r--r-- 1 omarvall omarvall    0 May  4 00:00 files_before.log
+-rw-r--r-- 1 omarvall omarvall  791 May  4 00:00 prompt.txt
+-rw-r--r-- 1 omarvall omarvall 1153 May  4 00:00 q_output.log
+-rw-r--r-- 1 omarvall omarvall 1199 May  4 00:00 q_permissions.log
+-rw-r--r-- 1 omarvall omarvall 1335 May  4 00:00 q_tools_status.log

@@ -1,0 +1,14 @@
+TASK: Create the following web project: create a simple website that say Life is Hard!
+
+IMPORTANT:
+1. Please use /tools trust fs_write to get permission to write files
+2. You MUST create all necessary files to implement this request
+3. Please use the fs_write tool to SAVE your implementation in the current directory
+4. You have full permission to write files here - make sure to use the fs_write tool
+
+Example of writing a file:
+1. First run: /tools trust fs_write
+2. Then use the fs_write tool to create index.html
+3. Include all necessary HTML, CSS, and JavaScript
+
+If the user wants a simple page, create that. If they want a complex app or interactive website, implement that. Don't be limited to simple solutions - use your capabilities to create what best meets the requirements.
