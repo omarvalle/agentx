@@ -1,0 +1,15 @@
+To learn more about MCP safety, see https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-mcp-security.html
+
+[90m
+[92m/help[90m all commands  [1m•[22m  [92mctrl + j[90m new lines  [1m•[22m  [92mctrl + k[90m fuzzy search
+[39m[38;5;8m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[39m
+[39mI'll create a simple website that says "Today is May 4th!" for you. Let's start by getting permission to write files and
+then create the necessary files.[0m[0m
+[0m[0m
+First, you'll need to run:[0m[0m
+[38;5;10m/tools trust fs_write
+[0m[0m[0m
+[0m[0m
+Once you've done that, I'll create the necessary files for a simple website.[0m[0m
+[0m[0m
+Let's start by examining the current directory structure to see what we're working with:[0m[0m

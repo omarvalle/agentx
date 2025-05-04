@@ -6,6 +6,8 @@ import json
 import logging
 import tempfile
 import uuid
+import webbrowser
+import sys
 
 # Get the logger from the main module
 logger = logging.getLogger('AgentX')
@@ -698,11 +700,16 @@ ls -la
             # Change back to the original directory
             os.chdir(original_dir)
             
-            logger.info(f"Website is being served at http://{ip_address}:8000")
+            url = f"http://{ip_address}:8000"
+            logger.info(f"Website is being served at {url}")
+            
+            # Automatically open the browser to view the website
+            self.open_browser(url)
+            
             return {
                 "success": True,
-                "url": f"http://{ip_address}:8000",
-                "message": f"Website is being served at http://{ip_address}:8000",
+                "url": url,
+                "message": f"Website is being served at {url}",
                 "html_files": html_files
             }
         except Exception as e:
@@ -715,6 +722,57 @@ ls -la
                 pass
             return {"success": False, "message": f"Error serving website: {str(e)}"}
         
+    def open_browser(self, url):
+        """Open the default web browser to view the given URL.
+        
+        Args:
+            url (str): The URL to open in the browser
+        """
+        try:
+            logger.info(f"Attempting to open browser at URL: {url}")
+            
+            # For Windows host when running in WSL, directly use explorer.exe which is more reliable
+            if os.path.exists('/mnt/c/Windows/explorer.exe'):
+                try:
+                    logger.info("Detected WSL environment, trying to open browser in Windows using explorer.exe")
+                    subprocess.run(['/mnt/c/Windows/explorer.exe', url], 
+                                  check=False, 
+                                  stdout=subprocess.DEVNULL, 
+                                  stderr=subprocess.DEVNULL)
+                    logger.info("Opened browser using Windows explorer.exe")
+                    return
+                except Exception as wsl_e:
+                    logger.warning(f"Failed to open browser from WSL using explorer.exe: {str(wsl_e)}")
+                
+            # Also try powershell.exe as an alternative method
+            if os.path.exists('/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'):
+                try:
+                    logger.info("Trying to open browser using PowerShell")
+                    ps_command = f"Start-Process '{url}'"
+                    subprocess.run(['/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-Command', ps_command], 
+                                  check=False, 
+                                  stdout=subprocess.DEVNULL, 
+                                  stderr=subprocess.DEVNULL)
+                    logger.info("Opened browser using Windows PowerShell")
+                    return
+                except Exception as ps_e:
+                    logger.warning(f"Failed to open browser from WSL using PowerShell: {str(ps_e)}")
+            
+            # Try the webbrowser module as a fallback
+            try:
+                if webbrowser.open(url):
+                    logger.info("Opened URL directly with webbrowser module")
+                    return
+            except Exception as we:
+                logger.warning(f"Failed to open browser using webbrowser module: {str(we)}")
+            
+            # Print instructions for manual opening
+            print(f"\n[INFO] Please manually open this URL in your browser: {url}")
+            
+        except Exception as e:
+            logger.error(f"Error opening browser: {str(e)}")
+            print(f"\n[INFO] Please manually open this URL in your browser: {url}")
+    
     def build_app(self, requirements, app_type="web", project_dir=None):
         """Build an application based on requirements.
         
