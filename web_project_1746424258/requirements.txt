@@ -1,0 +1,1 @@
+create a simple website that says "Happy High School Graduation!"

@@ -1,0 +1,303 @@
+To learn more about MCP safety, see https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-mcp-security.html
+
+[90m
+[92m/help[90m all commands  [1m•[22m  [92mctrl + j[90m new lines  [1m•[22m  [92mctrl + k[90m fuzzy search
+[39m[38;5;8m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[39m
+[39mI'll create a simple website that says "Happy High School Graduation!" with some nice styling. Let's 
+start by getting permission to write files and then create the necessary files.[0m[0m
+[0m[0m
+First, I need to see what files already exist in the current directory:[0m[0m
+[0m[0m
+[38;5;13m🛠️  Using tool: fs_read[38;5;2m (trusted)[39m[39m
+ ⋮ 
+ ● Reading directory: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258[0m with maximum depth of 0
+ ⋮ 
+[38;5;10m[1m ● Completed in 0.0s[39m
+[0m[0m
+[0m[0m
+Now I'll create the necessary files for the website:[0m[0m
+[0m[0m
+1. First, let's create an index.html file:[0m[0m
+[0m[0m
+[38;5;13m🛠️  Using tool: fs_write[38;5;2m (trusted)[39m[39m
+ ⋮ 
+ ● Path: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/index.html[0m
+
+[49m[38;5;10m+     1[39m:[38;5;10m[49m <!DOCTYPE html>
+[0m[49m[38;5;10m+     2[39m:[38;5;10m[49m <html lang="en">
+[0m[49m[38;5;10m+     3[39m:[38;5;10m[49m <head>
+[0m[49m[38;5;10m+     4[39m:[38;5;10m[49m     <meta charset="UTF-8">
+[0m[49m[38;5;10m+     5[39m:[38;5;10m[49m     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+[0m[49m[38;5;10m+     6[39m:[38;5;10m[49m     <title>Graduation Celebration</title>
+[0m[49m[38;5;10m+     7[39m:[38;5;10m[49m     <link rel="stylesheet" href="styles.css">
+[0m[49m[38;5;10m+     8[39m:[38;5;10m[49m </head>
+[0m[49m[38;5;10m+     9[39m:[38;5;10m[49m <body>
+[0m[49m[38;5;10m+    10[39m:[38;5;10m[49m     <div class="container">
+[0m[49m[38;5;10m+    11[39m:[38;5;10m[49m         <h1 class="title">Happy High School Graduation!</h1>
+[0m[49m[38;5;10m+    12[39m:[38;5;10m[49m         <div class="confetti-container" id="confetti-container"></div>
+[0m[49m[38;5;10m+    13[39m:[38;5;10m[49m         <div class="cap">
+[0m[49m[38;5;10m+    14[39m:[38;5;10m[49m             <div class="cap-top"></div>
+[0m[49m[38;5;10m+    15[39m:[38;5;10m[49m             <div class="cap-bottom"></div>
+[0m[49m[38;5;10m+    16[39m:[38;5;10m[49m             <div class="tassel"></div>
+[0m[49m[38;5;10m+    17[39m:[38;5;10m[49m         </div>
+[0m[49m[38;5;10m+    18[39m:[38;5;10m[49m     </div>
+[0m[49m[38;5;10m+    19[39m:[38;5;10m[49m     <script src="script.js"></script>
+[0m[49m[38;5;10m+    20[39m:[38;5;10m[49m </body>
+[0m[49m[38;5;10m+    21[39m:[38;5;10m[49m </html>
+[0m[K
+Creating: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/index.html[0m
+
+ ⋮ 
+[38;5;10m[1m ● Completed in 0.0s[39m
+[0m[0m
+[0m[0m
+[38;5;13m🛠️  Using tool: fs_write[38;5;2m (trusted)[39m[39m
+ ⋮ 
+ ● Path: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/styles.css[0m
+
+[49m[38;5;10m+     1[39m:[38;5;10m[49m * {
+[0m[49m[38;5;10m+     2[39m:[38;5;10m[49m     margin: 0;
+[0m[49m[38;5;10m+     3[39m:[38;5;10m[49m     padding: 0;
+[0m[49m[38;5;10m+     4[39m:[38;5;10m[49m     box-sizing: border-box;
+[0m[49m[38;5;10m+     5[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+     6[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+     7[39m:[38;5;10m[49m body {
+[0m[49m[38;5;10m+     8[39m:[38;5;10m[49m     font-family: 'Arial', sans-serif;
+[0m[49m[38;5;10m+     9[39m:[38;5;10m[49m     background: linear-gradient(135deg, #6e8efb, #a777e3);
+[0m[49m[38;5;10m+    10[39m:[38;5;10m[49m     height: 100vh;
+[0m[49m[38;5;10m+    11[39m:[38;5;10m[49m     display: flex;
+[0m[49m[38;5;10m+    12[39m:[38;5;10m[49m     justify-content: center;
+[0m[49m[38;5;10m+    13[39m:[38;5;10m[49m     align-items: center;
+[0m[49m[38;5;10m+    14[39m:[38;5;10m[49m     overflow: hidden;
+[0m[49m[38;5;10m+    15[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    16[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    17[39m:[38;5;10m[49m .container {
+[0m[49m[38;5;10m+    18[39m:[38;5;10m[49m     text-align: center;
+[0m[49m[38;5;10m+    19[39m:[38;5;10m[49m     position: relative;
+[0m[49m[38;5;10m+    20[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    21[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    22[39m:[38;5;10m[49m .title {
+[0m[49m[38;5;10m+    23[39m:[38;5;10m[49m     font-size: 4rem;
+[0m[49m[38;5;10m+    24[39m:[38;5;10m[49m     color: white;
+[0m[49m[38;5;10m+    25[39m:[38;5;10m[49m     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+[0m[49m[38;5;10m+    26[39m:[38;5;10m[49m     margin-bottom: 2rem;
+[0m[49m[38;5;10m+    27[39m:[38;5;10m[49m     animation: bounce 2s ease infinite;
+[0m[49m[38;5;10m+    28[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    29[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    30[39m:[38;5;10m[49m @keyframes bounce {
+[0m[49m[38;5;10m+    31[39m:[38;5;10m[49m     0%, 100% {
+[0m[49m[38;5;10m+    32[39m:[38;5;10m[49m         transform: translateY(0);
+[0m[49m[38;5;10m+    33[39m:[38;5;10m[49m     }
+[0m[49m[38;5;10m+    34[39m:[38;5;10m[49m     50% {
+[0m[49m[38;5;10m+    35[39m:[38;5;10m[49m         transform: translateY(-20px);
+[0m[49m[38;5;10m+    36[39m:[38;5;10m[49m     }
+[0m[49m[38;5;10m+    37[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    38[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    39[39m:[38;5;10m[49m .confetti {
+[0m[49m[38;5;10m+    40[39m:[38;5;10m[49m     position: absolute;
+[0m[49m[38;5;10m+    41[39m:[38;5;10m[49m     width: 10px;
+[0m[49m[38;5;10m+    42[39m:[38;5;10m[49m     height: 10px;
+[0m[49m[38;5;10m+    43[39m:[38;5;10m[49m     opacity: 0.7;
+[0m[49m[38;5;10m+    44[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    45[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    46[39m:[38;5;10m[49m .cap {
+[0m[49m[38;5;10m+    47[39m:[38;5;10m[49m     position: relative;
+[0m[49m[38;5;10m+    48[39m:[38;5;10m[49m     width: 120px;
+[0m[49m[38;5;10m+    49[39m:[38;5;10m[49m     height: 120px;
+[0m[49m[38;5;10m+    50[39m:[38;5;10m[49m     margin: 0 auto;
+[0m[49m[38;5;10m+    51[39m:[38;5;10m[49m     animation: float 3s ease-in-out infinite;
+[0m[49m[38;5;10m+    52[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    53[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    54[39m:[38;5;10m[49m .cap-top {
+[0m[49m[38;5;10m+    55[39m:[38;5;10m[49m     position: absolute;
+[0m[49m[38;5;10m+    56[39m:[38;5;10m[49m     width: 100%;
+[0m[49m[38;5;10m+    57[39m:[38;5;10m[49m     height: 30px;
+[0m[49m[38;5;10m+    58[39m:[38;5;10m[49m     background-color: #222;
+[0m[49m[38;5;10m+    59[39m:[38;5;10m[49m     top: 0;
+[0m[49m[38;5;10m+    60[39m:[38;5;10m[49m     border-radius: 5px;
+[0m[49m[38;5;10m+    61[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    62[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    63[39m:[38;5;10m[49m .cap-bottom {
+[0m[49m[38;5;10m+    64[39m:[38;5;10m[49m     position: absolute;
+[0m[49m[38;5;10m+    65[39m:[38;5;10m[49m     width: 100%;
+[0m[49m[38;5;10m+    66[39m:[38;5;10m[49m     height: 20px;
+[0m[49m[38;5;10m+    67[39m:[38;5;10m[49m     background-color: #222;
+[0m[49m[38;5;10m+    68[39m:[38;5;10m[49m     top: 30px;
+[0m[49m[38;5;10m+    69[39m:[38;5;10m[49m     border-radius: 5px;
+[0m[49m[38;5;10m+    70[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    71[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    72[39m:[38;5;10m[49m .tassel {
+[0m[49m[38;5;10m+    73[39m:[38;5;10m[49m     position: absolute;
+[0m[49m[38;5;10m+    74[39m:[38;5;10m[49m     width: 5px;
+[0m[49m[38;5;10m+    75[39m:[38;5;10m[49m     height: 40px;
+[0m[49m[38;5;10m+    76[39m:[38;5;10m[49m     background-color: gold;
+[0m[49m[38;5;10m+    77[39m:[38;5;10m[49m     top: 30px;
+[0m[49m[38;5;10m+    78[39m:[38;5;10m[49m     left: 20px;
+[0m[49m[38;5;10m+    79[39m:[38;5;10m[49m     transform-origin: top;
+[0m[49m[38;5;10m+    80[39m:[38;5;10m[49m     animation: swing 2s ease-in-out infinite;
+[0m[49m[38;5;10m+    81[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    82[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    83[39m:[38;5;10m[49m @keyframes float {
+[0m[49m[38;5;10m+    84[39m:[38;5;10m[49m     0%, 100% {
+[0m[49m[38;5;10m+    85[39m:[38;5;10m[49m         transform: translateY(0);
+[0m[49m[38;5;10m+    86[39m:[38;5;10m[49m     }
+[0m[49m[38;5;10m+    87[39m:[38;5;10m[49m     50% {
+[0m[49m[38;5;10m+    88[39m:[38;5;10m[49m         transform: translateY(-15px);
+[0m[49m[38;5;10m+    89[39m:[38;5;10m[49m     }
+[0m[49m[38;5;10m+    90[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    91[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    92[39m:[38;5;10m[49m @keyframes swing {
+[0m[49m[38;5;10m+    93[39m:[38;5;10m[49m     0%, 100% {
+[0m[49m[38;5;10m+    94[39m:[38;5;10m[49m         transform: rotate(-10deg);
+[0m[49m[38;5;10m+    95[39m:[38;5;10m[49m     }
+[0m[49m[38;5;10m+    96[39m:[38;5;10m[49m     50% {
+[0m[49m[38;5;10m+    97[39m:[38;5;10m[49m         transform: rotate(10deg);
+[0m[49m[38;5;10m+    98[39m:[38;5;10m[49m     }
+[0m[49m[38;5;10m+    99[39m:[38;5;10m[49m }
+[0m[K
+Creating: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/styles.css[0m
+
+ ⋮ 
+[38;5;10m[1m ● Completed in 0.0s[39m
+[0m[0m
+[0m[0m
+[38;5;13m🛠️  Using tool: fs_write[38;5;2m (trusted)[39m[39m
+ ⋮ 
+ ● Path: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/script.js[0m
+
+[49m[38;5;10m+     1[39m:[38;5;10m[49m document.addEventListener('DOMContentLoaded', function() {
+[0m[49m[38;5;10m+     2[39m:[38;5;10m[49m     createConfetti();
+[0m[49m[38;5;10m+     3[39m:[38;5;10m[49m });
+[0m[49m[38;5;10m+     4[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+     5[39m:[38;5;10m[49m function createConfetti() {
+[0m[49m[38;5;10m+     6[39m:[38;5;10m[49m     const container = document.getElementById('confetti-container');
+[0m[49m[38;5;10m+     7[39m:[38;5;10m[49m     const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', 
+[0m[49m[38;5;10m+     8[39m:[38;5;10m[49m                    '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', 
+[0m[49m[38;5;10m+     9[39m:[38;5;10m[49m                    '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+[0m[49m[38;5;10m+    10[39m:[38;5;10m[49m     
+[0m[49m[38;5;10m+    11[39m:[38;5;10m[49m     const confettiCount = 100;
+[0m[49m[38;5;10m+    12[39m:[38;5;10m[49m     
+[0m[49m[38;5;10m+    13[39m:[38;5;10m[49m     for (let i = 0; i < confettiCount; i++) {
+[0m[49m[38;5;10m+    14[39m:[38;5;10m[49m         setTimeout(() => {
+[0m[49m[38;5;10m+    15[39m:[38;5;10m[49m             const confetti = document.createElement('div');
+[0m[49m[38;5;10m+    16[39m:[38;5;10m[49m             confetti.classList.add('confetti');
+[0m[49m[38;5;10m+    17[39m:[38;5;10m[49m             
+[0m[49m[38;5;10m+    18[39m:[38;5;10m[49m             // Random position
+[0m[49m[38;5;10m+    19[39m:[38;5;10m[49m             const startPositionX = Math.random() * window.innerWidth;
+[0m[49m[38;5;10m+    20[39m:[38;5;10m[49m             
+[0m[49m[38;5;10m+    21[39m:[38;5;10m[49m             // Random color
+[0m[49m[38;5;10m+    22[39m:[38;5;10m[49m             const color = colors[Math.floor(Math.random() * colors.length)];
+[0m[49m[38;5;10m+    23[39m:[38;5;10m[49m             confetti.style.backgroundColor = color;
+[0m[49m[38;5;10m+    24[39m:[38;5;10m[49m             
+[0m[49m[38;5;10m+    25[39m:[38;5;10m[49m             // Random rotation
+[0m[49m[38;5;10m+    26[39m:[38;5;10m[49m             const rotation = Math.random() * 360;
+[0m[49m[38;5;10m+    27[39m:[38;5;10m[49m             confetti.style.transform = `rotate(${rotation}deg)`;
+[0m[49m[38;5;10m+    28[39m:[38;5;10m[49m             
+[0m[49m[38;5;10m+    29[39m:[38;5;10m[49m             // Set initial position
+[0m[49m[38;5;10m+    30[39m:[38;5;10m[49m             confetti.style.left = `${startPositionX}px`;
+[0m[49m[38;5;10m+    31[39m:[38;5;10m[49m             confetti.style.top = '-10px';
+[0m[49m[38;5;10m+    32[39m:[38;5;10m[49m             
+[0m[49m[38;5;10m+    33[39m:[38;5;10m[49m             container.appendChild(confetti);
+[0m[49m[38;5;10m+    34[39m:[38;5;10m[49m             
+[0m[49m[38;5;10m+    35[39m:[38;5;10m[49m             // Animate falling
+[0m[49m[38;5;10m+    36[39m:[38;5;10m[49m             animateConfetti(confetti);
+[0m[49m[38;5;10m+    37[39m:[38;5;10m[49m         }, i * 50);
+[0m[49m[38;5;10m+    38[39m:[38;5;10m[49m     }
+[0m[49m[38;5;10m+    39[39m:[38;5;10m[49m }
+[0m[49m[38;5;10m+    40[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    41[39m:[38;5;10m[49m function animateConfetti(confetti) {
+[0m[49m[38;5;10m+    42[39m:[38;5;10m[49m     const animationDuration = 3000 + Math.random() * 2000;
+[0m[49m[38;5;10m+    43[39m:[38;5;10m[49m     const finalPositionY = window.innerHeight + 10;
+[0m[49m[38;5;10m+    44[39m:[38;5;10m[49m     const finalPositionX = parseInt(confetti.style.left) + (Math.random() * 200 - 100);
+[0m[49m[38;5;10m+    45[39m:[38;5;10m[49m     
+[0m[49m[38;5;10m+    46[39m:[38;5;10m[49m     confetti.animate([
+[0m[49m[38;5;10m+    47[39m:[38;5;10m[49m         { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+[0m[49m[38;5;10m+    48[39m:[38;5;10m[49m         { transform: `translate(${Math.random() * 100 - 50}px, ${finalPositionY / 2}px) rotate(${Math.random() * 360}deg)`, opacity: 0.8 },
+[0m[49m[38;5;10m+    49[39m:[38;5;10m[49m         { transform: `translate(${finalPositionX - parseInt(confetti.style.left)}px, ${finalPositionY}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+[0m[49m[38;5;10m+    50[39m:[38;5;10m[49m     ], {
+[0m[49m[38;5;10m+    51[39m:[38;5;10m[49m         duration: animationDuration,
+[0m[49m[38;5;10m+    52[39m:[38;5;10m[49m         easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+[0m[49m[38;5;10m+    53[39m:[38;5;10m[49m     }).onfinish = function() {
+[0m[49m[38;5;10m+    54[39m:[38;5;10m[49m         confetti.remove();
+[0m[49m[38;5;10m+    55[39m:[38;5;10m[49m         // Create new confetti for continuous effect
+[0m[49m[38;5;10m+    56[39m:[38;5;10m[49m         const newConfetti = document.createElement('div');
+[0m[49m[38;5;10m+    57[39m:[38;5;10m[49m         newConfetti.classList.add('confetti');
+[0m[49m[38;5;10m+    58[39m:[38;5;10m[49m         newConfetti.style.backgroundColor = confetti.style.backgroundColor;
+[0m[49m[38;5;10m+    59[39m:[38;5;10m[49m         newConfetti.style.left = `${Math.random() * window.innerWidth}px`;
+[0m[49m[38;5;10m+    60[39m:[38;5;10m[49m         newConfetti.style.top = '-10px';
+[0m[49m[38;5;10m+    61[39m:[38;5;10m[49m         document.getElementById('confetti-container').appendChild(newConfetti);
+[0m[49m[38;5;10m+    62[39m:[38;5;10m[49m         animateConfetti(newConfetti);
+[0m[49m[38;5;10m+    63[39m:[38;5;10m[49m     };
+[0m[49m[38;5;10m+    64[39m:[38;5;10m[49m }
+[0m[K
+Creating: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/script.js[0m
+
+ ⋮ 
+[38;5;10m[1m ● Completed in 0.0s[39m
+[0m[0m
+[0m[0m
+[38;5;13m🛠️  Using tool: fs_write[38;5;2m (trusted)[39m[39m
+ ⋮ 
+ ● Path: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/README.md[0m
+
+[49m[38;5;10m+     1[39m:[38;5;10m[49m # High School Graduation Website
+[0m[49m[38;5;10m+     2[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+     3[39m:[38;5;10m[49m A simple celebratory website that displays "Happy High School Graduation!" with animations and visual effects.
+[0m[49m[38;5;10m+     4[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+     5[39m:[38;5;10m[49m ## Features
+[0m[49m[38;5;10m+     6[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+     7[39m:[38;5;10m[49m - Animated graduation cap
+[0m[49m[38;5;10m+     8[39m:[38;5;10m[49m - Falling confetti effect
+[0m[49m[38;5;10m+     9[39m:[38;5;10m[49m - Responsive design
+[0m[49m[38;5;10m+    10[39m:[38;5;10m[49m - Bouncing text animation
+[0m[49m[38;5;10m+    11[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    12[39m:[38;5;10m[49m ## Files
+[0m[49m[38;5;10m+    13[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    14[39m:[38;5;10m[49m - `index.html` - Main HTML structure
+[0m[49m[38;5;10m+    15[39m:[38;5;10m[49m - `styles.css` - CSS styling for the page
+[0m[49m[38;5;10m+    16[39m:[38;5;10m[49m - `script.js` - JavaScript for the confetti animation
+[0m[49m[38;5;10m+    17[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    18[39m:[38;5;10m[49m ## How to Use
+[0m[49m[38;5;10m+    19[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    20[39m:[38;5;10m[49m 1. Open `index.html` in any modern web browser
+[0m[49m[38;5;10m+    21[39m:[38;5;10m[49m 2. Enjoy the graduation celebration!
+[0m[49m[38;5;10m+    22[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    23[39m:[38;5;10m[49m ## Customization
+[0m[49m[38;5;10m+    24[39m:[38;5;10m[49m 
+[0m[49m[38;5;10m+    25[39m:[38;5;10m[49m You can modify the following elements:
+[0m[49m[38;5;10m+    26[39m:[38;5;10m[49m - Colors in the CSS file
+[0m[49m[38;5;10m+    27[39m:[38;5;10m[49m - Animation speeds and effects
+[0m[49m[38;5;10m+    28[39m:[38;5;10m[49m - Confetti density and colors in the JavaScript file
+[0m[K
+Creating: [38;5;10m/home/omarvall/projects/agentx/web_project_1746424258/README.md[0m
+
+ ⋮ 
+[38;5;10m[1m ● Completed in 0.0s[39m
+[0m[0m
+[0m[0m
+I've created a simple but visually appealing "Happy High School Graduation!" website with the following
+files:[0m[0m
+[0m[0m
+1. [1mindex.html[22m - The main HTML structure with the graduation message[0m[0m
+2. [1mstyles.css[22m - CSS styling with animations and visual effects[0m[0m
+3. [1mscript.js[22m - JavaScript for the confetti animation[0m[0m
+4. [1mREADME.md[22m - Documentation for the project[0m[0m
+[0m[0m
+The website features:[0m[0m
+[0m[0m
+• A large, bouncing "Happy High School Graduation!" text[0m[0m
+• An animated graduation cap with a swinging tassel[0m[0m
+• Colorful falling confetti effect that continuously generates[0m[0m
+• Responsive design that works on different screen sizes[0m[0m
+• A gradient background for visual appeal[0m[0m
+[0m[0m
+To view the website, simply open the index.html file in any modern web browser. The animations will 
+start automatically when the page loads.[0m[0m
+[0m[0m
+You can customize the website by:[0m[0m
+• Changing the colors in the CSS file[0m[0m
+• Adjusting animation speeds and effects[0m[0m
+• Modifying the confetti density and colors in the JavaScript file[0m[0m
+• Adding additional elements or text as needed[0m[0m
+[0m[0m
+Is there anything specific about the website you'd like me to explain or modify?[0m[0m

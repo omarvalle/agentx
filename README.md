@@ -10,6 +10,11 @@ AgentX is an orchestrator agent that uses Claude and Amazon Q CLI to build websi
 - General conversation capabilities powered by Claude
 - Real-time output streaming during website and app building
 - Fallback mechanisms when Q CLI encounters permission issues
+- Build complex web applications with natural language instructions
+- Deploy static websites to AWS using S3 and CloudFront
+- Generate images and text content for your projects
+- Integrate with external APIs and services
+- Ask questions and get expert answers on coding and development topics
 
 ## Prerequisites
 
@@ -73,6 +78,79 @@ AgentX is an orchestrator agent that uses Claude and Amazon Q CLI to build websi
    - "Create a CLI app that converts temperatures"
    - "Build a web app that shows random quotes"
    - Any general questions for Claude
+
+## Static Website Deployment to AWS
+
+AgentX can deploy static websites to AWS using S3 and CloudFront. This feature allows you to host your websites with global content delivery, HTTPS, and custom domains.
+
+### Prerequisites for AWS Deployment
+
+1. AWS CLI installed and configured with appropriate credentials
+2. Terraform CLI installed (version 1.0 or newer)
+3. Basic understanding of AWS services (S3, CloudFront, Route53)
+
+### Deployment Options
+
+AgentX supports two deployment approaches:
+
+1. **Individual Deployment**: Each website gets its own S3 bucket and CloudFront distribution.
+   - Best for isolated websites that need dedicated resources
+   - Simpler management of individual sites
+   - Example request: "Deploy my portfolio website to AWS"
+
+2. **Consolidated Deployment**: Multiple websites share a single S3 bucket (with folder separation) and CloudFront distribution.
+   - Cost-effective for hosting multiple websites
+   - Efficient resource utilization
+   - Example request: "Deploy my portfolio website to AWS using consolidated infrastructure" or "Deploy multiple websites to a single S3 bucket"
+
+### Features
+
+- Private S3 buckets with CloudFront Origin Access Control
+- Automatic CloudFront distribution setup with HTTPS
+- Custom domain support (requires Route53 hosted zone)
+- IAM user creation for website content management
+- Sample website content generation
+- Detailed deployment instructions
+
+### Example Deployment Commands
+
+Ask AgentX to deploy a website:
+
+```
+Deploy my static website to AWS with the name company-blog
+```
+
+For consolidated deployments:
+
+```
+Deploy multiple websites (blog, docs, and landing) to AWS using a consolidated bucket
+```
+
+With custom domain:
+
+```
+Deploy my portfolio static website to AWS with the domain portfolio.example.com
+```
+
+### Post-Deployment Management
+
+After deployment, AgentX provides instructions for:
+
+1. Configuring AWS CLI credentials for the deployment user
+2. Uploading website content to S3
+3. Invalidating CloudFront cache when content changes
+4. Accessing your website via CloudFront URL or custom domain
+
+## Build Applications
+
+AgentX can build various types of applications, including:
+
+- Static websites with HTML, CSS, and JavaScript
+- Web applications with frameworks like React, Vue, or Angular
+- Backend services with Node.js, Python, etc.
+- Mobile applications with React Native
+
+Simply describe what you want to build, and AgentX will generate the necessary code and instructions.
 
 ## How It Works
 

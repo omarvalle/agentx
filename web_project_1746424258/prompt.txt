@@ -1,4 +1,4 @@
-TASK: Create the following web project: create a simple website that says "Today is May 4th!"
+TASK: Create the following web project: create a simple website that says "Happy High School Graduation!"
 
 IMPORTANT:
 1. Please use /tools trust fs_write to get permission to write files
