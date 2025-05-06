@@ -59,4 +59,10 @@ variable "tags" {
   description = "Additional tags to apply to resources"
   type        = map(string)
   default     = {}
+}
+
+variable "project_id" {
+  description = "Unique identifier for the project that created this infrastructure (e.g., web_project_1234567890)"
+  type        = string
+  default     = null
 } 

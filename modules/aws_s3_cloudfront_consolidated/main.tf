@@ -6,11 +6,12 @@ resource "aws_s3_bucket" "website_bucket" {
   bucket        = var.bucket_name
   force_destroy = true
 
-  tags = {
+  tags = merge({
     Name        = var.bucket_name
     Environment = var.environment
     Managed     = "AgentX"
-  }
+    Project     = var.project_id != null ? var.project_id : "shared-infrastructure"
+  }, var.tags)
 }
 
 resource "aws_s3_bucket_ownership_controls" "website_bucket" {
@@ -177,11 +178,12 @@ resource "aws_cloudfront_distribution" "website" {
   # Price class
   price_class = var.price_class
 
-  tags = {
+  tags = merge({
     Name        = "cf-${var.bucket_name}"
     Environment = var.environment
     Managed     = "AgentX"
-  }
+    Project     = var.project_id != null ? var.project_id : "shared-infrastructure"
+  }, var.tags)
 }
 
 # Route53 DNS Record - only if domain name is provided

@@ -804,37 +804,44 @@ class OrchestratorAgent:
             # Use the WebsiteDeploymentOrchestrator for deployment
             from orchestrator import WebsiteDeploymentOrchestrator
             
-            # Determine the appropriate deployment mode based on user input
-            use_consolidated = self.should_use_consolidated_deployment(user_input)
+            # Always use consolidated deployment for simplicity and efficiency
+            use_consolidated = True
             
             # Initialize the orchestrator
             logger.info(f"Initializing WebsiteDeploymentOrchestrator, use_consolidated={use_consolidated}")
             orchestrator = WebsiteDeploymentOrchestrator(aws_region=website_details.get('region', 'us-east-1'))
             
             # Deploy the website
-            if use_consolidated:
-                logger.info("Using consolidated deployment approach")
-                deployment_result = self.deploy_consolidated_website(orchestrator, website_details)
-            else:
-                logger.info("Using individual deployment approach")
-                deployment_result = orchestrator.deploy_website(website_details)
+            logger.info("Using consolidated deployment approach")
+            deployment_result = self.deploy_consolidated_website(orchestrator, website_details)
             
             if deployment_result["success"]:
-                # Format the success message with deployment information
+                # Format the success message with deployment information including complete, clickable URL
+                website_url = deployment_result.get('website_url', '')
+                cloudfront_domain = website_url.split('/')[0] if website_url else ""
+                folder_name = website_details.get('folder_name', '')
+                
+                # Create a direct, clickable URL to the index.html in the specific folder
+                direct_url = f"https://{cloudfront_domain}/{folder_name}/index.html"
+                
                 deployment_info = (
                     f"Static website successfully deployed to AWS!\n\n"
-                    f"Website URL: {deployment_result.get('website_url')}\n"
+                    f"Website URL (copy and paste this into your browser):\n"
+                    f"{direct_url}\n\n"
                     f"CloudFront Distribution: {deployment_result.get('cloudfront_distribution')}\n"
                 )
                 
                 if deployment_result.get('custom_domain_url'):
-                    deployment_info += f"Custom Domain: {deployment_result.get('custom_domain_url')}\n"
+                    deployment_info += f"Custom Domain: {deployment_result.get('custom_domain_url')}\n\n"
                 
-                deployment_info += f"\nS3 Bucket: {deployment_result.get('s3_bucket')}\n\n"
+                deployment_info += f"S3 Bucket: {deployment_result.get('s3_bucket')}\n\n"
                 deployment_info += f"Deployment Instructions:\n{deployment_result.get('deployment_instructions')}"
                 
+                # Create a simple, immediate response with the URL in addition to detailed info
+                direct_response = f"Your website has been deployed to AWS! Access it at: {direct_url}"
+                
                 return {
-                    "response": response,
+                    "response": direct_response,
                     "result": deployment_info,
                     "used_q_cli": False
                 }
@@ -856,20 +863,6 @@ class OrchestratorAgent:
                 "result": error_message,
                 "used_q_cli": False
             }
-    
-    def should_use_consolidated_deployment(self, user_input):
-        """Determine if consolidated deployment should be used based on user input."""
-        # Check if user explicitly mentions consolidated or shared infrastructure
-        keywords = ["consolidated", "shared", "single bucket", "one bucket", "multiple sites", 
-                   "multiple websites", "many websites", "multiple domains"]
-        
-        user_input_lower = user_input.lower()
-        for keyword in keywords:
-            if keyword in user_input_lower:
-                return True
-        
-        # Default to individual deployments for simplicity unless requested otherwise
-        return False
     
     def deploy_consolidated_website(self, orchestrator, website_config):
         """Deploy a website using the consolidated approach."""
@@ -1029,9 +1022,10 @@ class OrchestratorAgent:
         
         # Extract bucket name from outputs or use the configured one
         actual_bucket_name = outputs.get("website_bucket_name", {}).get("value", main_bucket_name)
+        cloudfront_domain = outputs.get("cloudfront_domain", {}).get("value", "")
         
         # Prepare result
-        website_url = f"{outputs.get('cloudfront_domain', {}).get('value')}/{folder_name}/"
+        website_url = f"{cloudfront_domain}/{folder_name}/"
         
         result = {
             "success": True,
@@ -1043,6 +1037,7 @@ class OrchestratorAgent:
                 actual_bucket_name,
                 folder_name,
                 outputs.get("cloudfront_distribution_id", {}).get("value", ""),
+                cloudfront_domain,
                 website_config.get("region", "us-east-1")
             ),
             "deployment_dir": deployment_dir
@@ -1071,9 +1066,11 @@ module "consolidated_website" {{
   website_folders     = {json.dumps(folders)}
   price_class         = "{website_config.get('price_class', 'PriceClass_100')}"
   region              = "{website_config.get('region', 'us-east-1')}"
+  project_id          = "{website_config.get('project_id', f'agentx-project-{int(time.time())}')}"
   tags                = {{
     "Provisioned" = "AgentX"
     "Description" = "Consolidated static website hosting"
+    "CreatedAt"   = "{time.strftime('%Y-%m-%d %H:%M:%S')}"
   }}
 }}
 
@@ -1244,54 +1241,49 @@ output "website_deployer_secret_key" {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Error - Page Not Found</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f5f5f5;
-      color: #333;
-    }
     .container {
       text-align: center;
-      padding: 2rem;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      max-width: 90%;
-      width: 500px;
+      max-width: 600px;
     }
+    
     h1 {
       color: #e74c3c;
     }
+    
     .back-link {
-      margin-top: 1rem;
       display: inline-block;
-      color: #3498db;
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #3498db;
+      color: white;
       text-decoration: none;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
     }
+    
     .back-link:hover {
-      text-decoration: underline;
+      background-color: #2980b9;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>404 - Page Not Found</h1>
-    <p>The page you are looking for does not exist or has been moved.</p>
+    <p>The page you are looking for doesn't exist or has been moved.</p>
     <a href="/" class="back-link">Return to Homepage</a>
   </div>
 </body>
 </html>
             """)
     
-    def _generate_consolidated_deployment_instructions(self, bucket_name, folder_name, cloudfront_id, region):
+    def _generate_consolidated_deployment_instructions(self, bucket_name, folder_name, cloudfront_id, cloudfront_domain, region):
         """Generate deployment instructions for consolidated website."""
         return f"""
-To deploy content to your static website:
+Your website is accessible at:
+https://{cloudfront_domain}/{folder_name}/index.html
+
+To deploy content updates to your static website:
 
 1. Set up AWS CLI credentials for the deployment user:
    aws configure --profile agentx-website-deployer
@@ -1302,8 +1294,6 @@ To deploy content to your static website:
 
 3. Invalidate CloudFront cache for your folder:
    aws cloudfront create-invalidation --distribution-id {cloudfront_id} --paths "/{folder_name}/*" --profile agentx-website-deployer
-
-Your website is accessible at: https://<cloudfront-domain>/{folder_name}/
         """
     
     def extract_content_directory(self, user_input):
@@ -1547,75 +1537,56 @@ h2 {
         """Extract website deployment details from user input using Claude."""
         logger.info("Extracting website details from user input")
         
-        system_prompt = """
-        You are an assistant that extracts structured information about static website deployment requirements from user input.
-        Extract the following information and return it as a valid JSON object:
+        # Generate a timestamp for unique naming
+        timestamp = int(time.time())
         
-        1. bucket_name - A suitable S3 bucket name based on the user's request, ensure it's globally unique by appending a timestamp or random string
-        2. domain_name - Custom domain name if specified (null if not mentioned)
-        3. zone_id - Route53 zone ID if specified (null if not mentioned)
-        4. environment - The deployment environment (dev, staging, prod, etc.)
-        5. description - Brief description of the website's purpose
-        6. region - AWS region for deployment (default to us-east-1)
-        7. folder_name - If deploying to a consolidated bucket, what folder name to use (default to same as bucket_name)
-        
-        Example output:
-        {
-            "bucket_name": "company-marketing-site-89237",
-            "domain_name": "www.example.com",
-            "zone_id": null,
-            "environment": "prod", 
-            "description": "Company marketing website",
-            "region": "us-east-1",
-            "folder_name": "marketing"
-        }
-        
-        IMPORTANT: Return ONLY the JSON object with no explanation, introduction, or additional text.
-        If the user doesn't specify a particular field, use reasonable defaults based on their request.
-        If no domain name is mentioned, set domain_name to null.
-        """
-        
+        # Extract potential website name from user input
+        website_name = None
         try:
+            system_prompt = """
+            Extract a short name for the website based on the user's request.
+            Return ONLY the name, with no extra text or explanation. 
+            If no specific name is mentioned, return "website".
+            The name should be simple, lowercase, and contain only letters, numbers, and hyphens.
+            """
+            
             response = anthropic.messages.create(
                 model=self.classification_model,
-                max_tokens=500,
+                max_tokens=100,
                 system=system_prompt,
                 messages=[{"role": "user", "content": user_input}]
             )
             
-            details_text = response.content[0].text.strip()
-            logger.info(f"Extracted website details: {details_text}")
-            
-            # Parse the JSON response
-            try:
-                details = json.loads(details_text)
-                logger.info(f"Parsed website details: {details}")
-                return details
-            except json.JSONDecodeError:
-                logger.error(f"Failed to parse website details as JSON: {details_text}")
-                # Return default values if parsing fails
-                return {
-                    "bucket_name": f"static-website-{int(time.time())}",
-                    "domain_name": None,
-                    "zone_id": None,
-                    "environment": "dev",
-                    "description": "Static website",
-                    "region": "us-east-1",
-                    "folder_name": f"static-website-{int(time.time())}"
-                }
-            
+            website_name = response.content[0].text.strip().lower()
+            # Clean the name to ensure it's valid for URLs and S3
+            import re
+            website_name = re.sub(r'[^a-z0-9-]', '', website_name)
+            if not website_name:
+                website_name = "website"
         except Exception as e:
-            logger.error(f"Error extracting website details: {str(e)}")
-            # Return default values
-            return {
-                "bucket_name": f"static-website-{int(time.time())}",
-                "domain_name": None,
-                "zone_id": None,
-                "environment": "dev",
-                "description": "Static website",
-                "region": "us-east-1",
-                "folder_name": f"static-website-{int(time.time())}"
-            }
+            logger.error(f"Error extracting website name: {str(e)}")
+            website_name = "website"
+        
+        # Build details directly rather than asking Claude to generate JSON
+        details = {
+            "bucket_name": f"agentx-websites-{timestamp}",
+            "domain_name": None,
+            "zone_id": None,
+            "environment": "prod",
+            "description": f"{website_name} website",
+            "region": "us-east-1",
+            "folder_name": f"{website_name}-{timestamp}",
+            "project_id": f"agentx-project-{timestamp}"
+        }
+        
+        # If we have a last project, use its ID
+        if self.last_project_folder and self.last_project_type == "website":
+            # Extract the project folder name as project_id
+            project_folder_name = os.path.basename(self.last_project_folder)
+            details["project_id"] = project_folder_name
+            
+        logger.info(f"Generated website details: {details}")
+        return details
 
 def main():
     """Run the main application."""
@@ -1662,9 +1633,9 @@ def main():
         # Display the response
         print("\nAgentX:", result["response"])
         
-        # If Q CLI was used, display its results
-        if result.get("used_q_cli", False):
-            logger.info("Displaying Q CLI results")
+        # If Q CLI was used or if there are additional results to display, show them
+        if result.get("used_q_cli", False) or "result" in result:
+            logger.info("Displaying results")
             print("\nResults:")
             print(result.get("result", "No results available"))
 

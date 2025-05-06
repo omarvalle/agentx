@@ -4,10 +4,12 @@ resource "aws_s3_bucket" "website" {
   bucket        = var.bucket_name
   force_destroy = true
 
-  tags = {
+  tags = merge({
     Name        = var.bucket_name
     Environment = var.environment
-  }
+    Managed     = "AgentX"
+    Project     = var.project_id != null ? var.project_id : "unknown"
+  }, var.tags)
 }
 
 resource "aws_s3_bucket_ownership_controls" "website" {
@@ -143,14 +145,8 @@ resource "aws_cloudfront_distribution" "website" {
 
   # SSL Certificate configuration
   viewer_certificate {
-    dynamic "acm_certificate_arn" {
-      for_each = var.domain_name != null ? [aws_acm_certificate.website[0].arn] : []
-      content {
-        acm_certificate_arn = acm_certificate_arn.value
-        ssl_support_method  = "sni-only"
-      }
-    }
-    
+    acm_certificate_arn      = var.domain_name != null ? aws_acm_certificate.website[0].arn : null
+    ssl_support_method       = var.domain_name != null ? "sni-only" : null
     cloudfront_default_certificate = var.domain_name == null
     minimum_protocol_version       = var.domain_name != null ? "TLSv1.2_2021" : "TLSv1"
   }
@@ -158,10 +154,12 @@ resource "aws_cloudfront_distribution" "website" {
   # Price class
   price_class = var.price_class
 
-  tags = {
+  tags = merge({
     Name        = "cf-${var.bucket_name}"
     Environment = var.environment
-  }
+    Managed     = "AgentX"
+    Project     = var.project_id != null ? var.project_id : "unknown"
+  }, var.tags)
 }
 
 # Route53 DNS Record - only if domain name is provided
