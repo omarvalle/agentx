@@ -21,6 +21,8 @@ AgentX is an orchestrator agent that uses Claude and Amazon Q CLI to build websi
 - Python 3.7+
 - Amazon Q CLI installed in WSL
 - Anthropic API key
+- AWS CLI and credentials (for AWS deployment features)
+- Terraform CLI (for AWS deployment features)
 
 ## Setup
 
@@ -41,9 +43,12 @@ AgentX is an orchestrator agent that uses Claude and Amazon Q CLI to build websi
    pip install -r requirements.txt
    ```
 
-4. Create a `.env` file with your Anthropic API key:
+4. Create a `.env` file with your Anthropic API key and AWS credentials:
    ```
    ANTHROPIC_API_KEY=sk-ant-api03-...
+   AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY
+   AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_KEY
+   AWS_REGION=us-east-1
    ```
 
 5. Make sure Amazon Q CLI is installed in your WSL environment. If not, install it following these steps:
@@ -77,6 +82,7 @@ AgentX is an orchestrator agent that uses Claude and Amazon Q CLI to build websi
    - "Build me a simple hello world website"
    - "Create a CLI app that converts temperatures"
    - "Build a web app that shows random quotes"
+   - "Deploy my website to AWS"
    - Any general questions for Claude
 
 ## Static Website Deployment to AWS
@@ -89,19 +95,15 @@ AgentX can deploy static websites to AWS using S3 and CloudFront. This feature a
 2. Terraform CLI installed (version 1.0 or newer)
 3. Basic understanding of AWS services (S3, CloudFront, Route53)
 
-### Deployment Options
+### Deployment Approach
 
-AgentX supports two deployment approaches:
+AgentX uses a consolidated deployment approach for all websites:
 
-1. **Individual Deployment**: Each website gets its own S3 bucket and CloudFront distribution.
-   - Best for isolated websites that need dedicated resources
-   - Simpler management of individual sites
-   - Example request: "Deploy my portfolio website to AWS"
-
-2. **Consolidated Deployment**: Multiple websites share a single S3 bucket (with folder separation) and CloudFront distribution.
-   - Cost-effective for hosting multiple websites
-   - Efficient resource utilization
-   - Example request: "Deploy my portfolio website to AWS using consolidated infrastructure" or "Deploy multiple websites to a single S3 bucket"
+- **Consolidated Deployment**: Multiple websites share a single S3 bucket (with folder separation) and CloudFront distribution
+  - Cost-effective for hosting multiple websites
+  - Efficient resource utilization
+  - Each website is stored in its own folder within the shared bucket
+  - All resources are tagged with the project ID for easy management
 
 ### Features
 
@@ -110,36 +112,61 @@ AgentX supports two deployment approaches:
 - Custom domain support (requires Route53 hosted zone)
 - IAM user creation for website content management
 - Sample website content generation
+- Project-based tagging for better resource management
+- Easy-to-copy URLs for accessing deployed websites
 - Detailed deployment instructions
+- Terraform-based infrastructure as code
 
 ### Example Deployment Commands
 
-Ask AgentX to deploy a website:
+After building a website with AgentX, you can deploy it to AWS with a simple command:
 
 ```
-Deploy my static website to AWS with the name company-blog
+Deploy my website to AWS
 ```
 
-For consolidated deployments:
+You can also specify a name or description:
 
 ```
-Deploy multiple websites (blog, docs, and landing) to AWS using a consolidated bucket
+Deploy my portfolio website to AWS
 ```
 
-With custom domain:
+With custom domain (requires Route53 setup):
 
 ```
-Deploy my portfolio static website to AWS with the domain portfolio.example.com
+Deploy my website to AWS with domain mysite.example.com
 ```
 
 ### Post-Deployment Management
 
-After deployment, AgentX provides instructions for:
+After deployment, AgentX provides:
 
-1. Configuring AWS CLI credentials for the deployment user
-2. Uploading website content to S3
-3. Invalidating CloudFront cache when content changes
-4. Accessing your website via CloudFront URL or custom domain
+1. A direct URL that you can copy and paste into your browser
+2. Instructions for updating your website content
+3. Details about the AWS resources created
+4. Commands for invalidating the CloudFront cache
+
+### Cleaning Up AWS Resources
+
+AgentX includes a cleanup script to help you manage and remove AWS resources:
+
+```
+python cleanup_terraform.py list
+```
+
+This will show all deployments organized by project ID.
+
+To clean up a specific project:
+
+```
+python cleanup_terraform.py project <project-id>
+```
+
+To clean up all resources:
+
+```
+python cleanup_terraform.py all
+```
 
 ## Build Applications
 
@@ -164,9 +191,16 @@ For website building, the system:
 3. Starts a simple HTTP server to serve the website
 4. If Q CLI fails to create files directly, the system extracts HTML from Q's output or creates a minimal template
 
+For AWS deployment, the system:
+1. Creates a Terraform configuration based on your requirements
+2. Provisions AWS resources (S3, CloudFront, IAM)
+3. Uploads your website content to S3
+4. Invalidates the CloudFront cache
+5. Provides you with a direct link to access your website
+
 ## Real-Time Feedback
 
-AgentX now provides real-time output streaming during website and app building:
+AgentX provides real-time output streaming during website and app building:
 - You can see Amazon Q CLI's progress directly in your terminal
 - The system shows clear status messages about each step being performed
 - File creation and permission status is displayed as it happens
@@ -185,6 +219,7 @@ AgentX now provides real-time output streaming during website and app building:
 
 - **Q CLI Permission Errors**: If you see "Tool approval required but --no-interactive was specified" errors, manually run Q CLI with `q chat --trust-all-tools` and enter `/tools trust fs_write` to grant file writing permissions.
 - **No HTML Files Created**: The system will attempt to extract HTML from Q CLI's output or create a minimal template if direct file creation fails.
+- **AWS Deployment Issues**: Ensure your AWS credentials are properly set up in the .env file. If you encounter errors, check the logs for details.
 - **Request Included in Output**: If the website displays the entire request text instead of just the content, try simplifying your request or use more specific wording to indicate the exact text to display.
 
 ## Future Enhancements
@@ -194,6 +229,8 @@ AgentX now provides real-time output streaming during website and app building:
 - Add additional specialized agents for different tasks
 - Implement better error handling and recovery
 - Improve Q CLI permission handling and file creation reliability
+- Add support for custom CI/CD pipelines
+- Enhance AWS resource management and monitoring
 
 ## License
 

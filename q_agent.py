@@ -817,7 +817,9 @@ ls -la
             
             # Determine the prompt based on app type
             if app_type == "web":
-                prompt = f"""I want to build a web application with these requirements: {requirements}
+                # Enhanced prompt for web applications with database
+                if "database" in requirements.lower() or "db" in requirements.lower() or "data" in requirements.lower() or "postgres" in requirements.lower() or "todo" in requirements.lower():
+                    prompt = f"""I want to build a web application with these requirements: {requirements}
 
 IMPORTANT:
 1. Please use /tools trust fs_write to get permission to write files
@@ -825,9 +827,61 @@ IMPORTANT:
 3. Please use the fs_write tool to SAVE your implementation in the current directory
 4. You have full permission to write files here - make sure to use the fs_write tool
 
-Create all necessary files including HTML, CSS, JavaScript, and any backend code if needed.
-Make it simple but functional.
-Include a README.md with instructions on how to run the application."""
+For this web application with DATABASE:
+1. Create a complete, working Node.js application with Express server
+2. Include ALL files needed for a fully functional app that stores data in a database
+3. Create a comprehensive .env.example file with all required database parameters:
+   - DB_HOST=localhost
+   - DB_PORT=5432
+   - DB_NAME=your_db_name  
+   - DB_USER=your_username
+   - DB_PASSWORD=your_password
+   - PORT=3000
+4. Set up proper database connection handling in your code with these features:
+   - Connection retries and error handling
+   - Use environment variables for all database configuration
+   - Proper connection pool management
+   - Add support for demo mode with DB_DEMO_MODE=true environment variable
+5. IMPORTANT: Add a fallback mechanism to use in-memory storage when DB_DEMO_MODE=true
+   - Create sample seed data for the application domain
+   - Ensure all database operations work in both real DB and demo modes
+6. Create a detailed README.md with these sections:
+   - Installation instructions
+   - Database setup steps with exact commands
+   - Environment configuration guide
+   - Running the application locally
+7. The server.js file MUST use process.env.PORT || 3000 for port configuration
+8. Include a package.json with all dependencies clearly defined
+9. Design the app to be runnable with "npm install" and "npm start"
+10. For Todo apps, include:
+    - Task creation, editing, deletion, and completion toggle
+    - Proper error handling
+    - API endpoints and frontend integration
+
+Create all necessary files including frontend (HTML, CSS, JavaScript), and backend code.
+Focus on creating a complete, production-ready solution with proper error handling.
+MAKE SURE THE APP CAN BE RUN IMMEDIATELY AFTER SETUP."""
+                else:
+                    prompt = f"""I want to build a web application with these requirements: {requirements}
+
+IMPORTANT:
+1. Please use /tools trust fs_write to get permission to write files
+2. You MUST create all necessary files to implement this request
+3. Please use the fs_write tool to SAVE your implementation in the current directory
+4. You have full permission to write files here - make sure to use the fs_write tool
+
+For this web application:
+1. Create a complete, working Node.js application with Express server
+2. Set up the server.js file to use process.env.PORT || 3000 for easier deployment
+3. Use proper error handling
+4. All file paths should be relative to the project root
+5. Include package.json with all dependencies clearly defined
+6. Design the app to be runnable with "npm start"
+
+Create all necessary files including HTML, CSS, JavaScript, and any backend code needed.
+Make sure the app is ready to run with just 'npm install' and 'npm start'.
+Include a comprehensive README.md with usage instructions.
+Your priority is to create a complete, functional solution."""
             elif app_type == "cli":
                 prompt = f"""I want to build a command line application with these requirements: {requirements}
 
@@ -997,6 +1051,42 @@ ls -la
                     f.write("## Files\n\n")
                     f.write("```\n")
                     f.write(ls_result.stdout)
+                    f.write("```\n")
+                    
+                    # Add database setup instructions if this is a web app
+                    if app_type == "web" and ("database" in requirements.lower() or "db" in requirements.lower() or "postgres" in requirements.lower() or "todo" in requirements.lower()):
+                        f.write("\n## Database Setup\n\n")
+                        f.write("This application requires a PostgreSQL database.\n\n")
+                        f.write("1. Create a database:\n")
+                        f.write("```sql\n")
+                        f.write("CREATE DATABASE app_db;\n")
+                        f.write("```\n\n")
+                        f.write("2. Configure the connection in the .env file:\n")
+                        f.write("```\n")
+                        f.write("DB_HOST=localhost\n")
+                        f.write("DB_PORT=5432\n")
+                        f.write("DB_NAME=app_db\n")
+                        f.write("DB_USER=postgres\n")
+                        f.write("DB_PASSWORD=your_password\n")
+                        f.write("```\n\n")
+                        f.write("3. Create the necessary tables (you may need to adjust based on the app):\n")
+                        f.write("```sql\n")
+                        f.write("CREATE TABLE IF NOT EXISTS todos (\n")
+                        f.write("  id SERIAL PRIMARY KEY,\n")
+                        f.write("  text VARCHAR(255) NOT NULL,\n")
+                        f.write("  completed BOOLEAN DEFAULT FALSE,\n")
+                        f.write("  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n")
+                        f.write(");\n")
+                        f.write("```\n\n")
+                    
+                    # Add setup and run instructions
+                    f.write("\n## Setup\n\n")
+                    f.write("```bash\n")
+                    f.write("npm install\n")
+                    f.write("```\n\n")
+                    f.write("## Running\n\n")
+                    f.write("```bash\n")
+                    f.write("npm start\n")
                     f.write("```\n")
             
             # Return to original directory

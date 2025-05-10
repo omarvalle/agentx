@@ -147,20 +147,36 @@ def destroy_terraform_infrastructure(directory, force=False):
             os.chdir(original_dir)
             return False
         
-        # Run terraform destroy
+        # Run terraform destroy - always use -auto-approve to avoid getting stuck
         logger.info("Running Terraform destroy...")
-        destroy_cmd = ["terraform", "destroy"]
-        if force:
-            destroy_cmd.append("-auto-approve")
+        destroy_cmd = ["terraform", "destroy", "-auto-approve"]
         
-        destroy_result = subprocess.run(
+        # Always show output in real-time for better visibility
+        logger.info("Running terraform destroy command (this may take several minutes)...")
+        process = subprocess.Popen(
             destroy_cmd,
-            capture_output=not force,  # Show output in real-time if force is True
-            text=True
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1
         )
         
-        if destroy_result.returncode != 0:
-            logger.error(f"Terraform destroy failed: {destroy_result.stderr}")
+        # Stream output in real-time
+        for line in iter(process.stdout.readline, ''):
+            line = line.strip()
+            if line:
+                logger.info(f"Terraform: {line}")
+        
+        # Wait for process with timeout
+        try:
+            return_code = process.wait(timeout=600)  # 10 minute timeout
+            if return_code != 0:
+                logger.error(f"Terraform destroy failed with return code {return_code}")
+                os.chdir(original_dir)
+                return False
+        except subprocess.TimeoutExpired:
+            logger.warning("Terraform destroy timed out after 10 minutes")
+            process.kill()
             os.chdir(original_dir)
             return False
         
